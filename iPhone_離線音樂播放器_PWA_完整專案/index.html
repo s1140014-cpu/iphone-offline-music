@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081321">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="離線音樂">
+  <meta name="description" content="可離線使用的本機音樂播放器，支援播放清單、音量與 10 段 EQ。">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>本地音樂播放器</title>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand-icon">♫</div>
+      <div class="brand">
+        <h1>本地音樂播放器</h1>
+        <p>OFFLINE MUSIC · 不需網路播放已匯入歌曲</p>
+      </div>
+      <span class="offline-pill"><i></i> 離線模式</span>
+    </header>
+
+    <section class="panel import-panel">
+      <div>
+        <h2>音樂庫</h2>
+        <p class="muted">音樂會保存在這個瀏覽器的本機儲存空間</p>
+      </div>
+      <label class="primary-btn import-btn">
+        <span>＋ 加入音樂</span>
+        <input id="fileInput" type="file" accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac" multiple>
+      </label>
+    </section>
+
+    <section class="panel now-playing">
+      <div class="artwork"><span>♫</span><small>LOCAL AUDIO</small></div>
+      <div class="track-meta">
+        <p class="eyebrow">正在播放</p>
+        <h2 id="nowTitle">尚未選擇歌曲</h2>
+        <p id="nowDetail" class="muted">點選「加入音樂」匯入手機或電腦裡的音樂</p>
+        <div class="progress-wrap">
+          <input id="seek" type="range" min="0" max="1000" value="0" aria-label="播放進度">
+          <div class="time-row"><span id="currentTime">00:00</span><span id="duration">00:00</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel transport">
+      <div class="transport-buttons">
+        <button id="shuffleBtn" class="icon-btn" aria-label="隨機播放" title="隨機播放">🔀</button>
+        <button id="prevBtn" class="icon-btn big" aria-label="上一首" title="上一首">⏮</button>
+        <button id="playBtn" class="play-btn" aria-label="播放">▶</button>
+        <button id="nextBtn" class="icon-btn big" aria-label="下一首" title="下一首">⏭</button>
+        <button id="repeatBtn" class="icon-btn" aria-label="循環播放" title="循環播放">🔁</button>
+      </div>
+      <div class="volume-row">
+        <span>🔈</span><input id="volume" type="range" min="0" max="100" value="75" aria-label="音量">
+        <span>🔊</span><strong id="volumeLabel">75%</strong>
+      </div>
+    </section>
+
+    <section class="panel playlist-panel">
+      <div class="section-heading">
+        <div><h2>播放清單</h2><p id="trackCount" class="muted">0 首歌曲</p></div>
+        <button id="clearBtn" class="text-btn">清除清單</button>
+      </div>
+      <div id="emptyState" class="empty-state">
+        <div class="empty-note">♫</div>
+        <strong>播放清單是空的</strong>
+        <p>匯入 MP3、M4A、WAV 等音訊檔案開始播放。</p>
+      </div>
+      <ol id="playlist" class="playlist"></ol>
+    </section>
+
+    <section class="panel eq-panel">
+      <div class="section-heading">
+        <div><h2>10 段 EQ 等化器</h2><p class="muted">使用 Web Audio 濾波器即時調整聲音</p></div>
+        <label class="switch"><input id="eqEnabled" type="checkbox" checked><span></span></label>
+      </div>
+      <div id="eqControls" class="eq-controls"></div>
+      <div class="eq-footer">
+        <button id="flatBtn" class="secondary-btn">重設 EQ</button>
+        <span id="eqStatus" class="muted">EQ 已啟用</span>
+      </div>
+    </section>
+
+    <footer>
+      <p>歌曲只保存在此瀏覽器的本機儲存空間。若清除網站資料，匯入歌曲也可能被刪除。</p>
+      <p>iPhone 背景播放及音訊格式支援會依 iOS / Safari 版本而異。</p>
+    </footer>
+    <audio id="audio" playsinline preload="metadata"></audio>
+    <div id="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
